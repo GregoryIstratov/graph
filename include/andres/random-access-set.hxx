@@ -7,6 +7,8 @@
 #include <algorithm> // std::lower_bound, std::upper_bound
 #include <functional> // std::greater
 #include <utility> // std::make_pair
+#include <memory>
+#include <type_traits>
 
 namespace andres {
 
@@ -31,7 +33,8 @@ public:
     typedef Comparison value_compare;
     typedef Allocator allocator_type;
 
-    typedef typename Allocator::const_reference const_reference;
+    using AllocatorTraits = std::allocator_traits<Allocator>;
+    typedef typename std::add_const<typename std::add_lvalue_reference<typename AllocatorTraits::value_type>::type>::type const_reference;
     typedef typename Vector::iterator iterator;
     typedef typename Vector::const_iterator const_iterator;
     typedef typename Vector::reverse_iterator reverse_iterator;
